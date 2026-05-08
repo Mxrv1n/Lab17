@@ -1,3 +1,11 @@
+"""
+Program Name: Lab17_mperez55.py
+Author: Marvin Perez
+Purpose: Retrieve top stories from the Hacker News API and
+display the number of comments for each article while
+handling missing comment data safely.
+Date: 5/7/2026
+"""
 from operator import itemgetter
 
 import requests
