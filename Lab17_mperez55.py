@@ -1,7 +1,8 @@
 """
 Program Name: Lab17_mperez55.py
 Author: Marvin Perez
-Purpose: Retrieve top stories from the Hacker News API and
+Purpose: Option 1. 
+Retrieve top stories from the Hacker News API and
 display the number of comments for each article while
 handling missing comment data safely.
 Date: 5/7/2026
@@ -27,16 +28,15 @@ for submission_id in submission_ids[:30]:
 
     # Build a dictionary for each article.
     comments = response_dict.get('descendants', 0)
-    
+    title = response_dict.get('title', 'No title available')
     submission_dict = {
-        'title': response_dict['title'],
+        'title': title,
         'hn_link': f"https://news.ycombinator.com/item?id={submission_id}",
         'comments': comments,
     }
     submission_dicts.append(submission_dict)
 
-    submission_dicts = sorted(submission_dicts, key=itemgetter('comments'),
-                            reverse=True)
+submission_dicts = sorted(submission_dicts, key=itemgetter('comments'),reverse=True)
 
 for submission_dict in submission_dicts:
     print(f"\nTitle: {submission_dict['title']}")
