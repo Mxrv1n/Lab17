@@ -1,0 +1,44 @@
+"""
+Program Name: Lab17_mperez55.py
+Author: Marvin Perez
+Purpose: Option 1. 
+Retrieve top stories from the Hacker News API and
+display the number of comments for each article while
+handling missing comment data safely.
+Date: 5/7/2026
+"""
+from operator import itemgetter
+
+import requests
+
+# Make an API call and check the response.
+url = "https://hacker-news.firebaseio.com/v0/topstories.json"
+r = requests.get(url)
+print(f"Status code: {r.status_code}")
+
+# Process information about each submission.
+submission_ids = r.json()
+submission_dicts = []
+for submission_id in submission_ids[:30]:
+    # Make a new API call for each submission.
+    url = f"https://hacker-news.firebaseio.com/v0/item/{submission_id}.json"
+    r = requests.get(url)
+    print(f"id: {submission_id}\tstatus: {r.status_code}")
+    response_dict = r.json()
+
+    # Build a dictionary for each article.
+    comments = response_dict.get('descendants', 0)
+    title = response_dict.get('title', 'No title available')
+    submission_dict = {
+        'title': title,
+        'hn_link': f"https://news.ycombinator.com/item?id={submission_id}",
+        'comments': comments,
+    }
+    submission_dicts.append(submission_dict)
+
+submission_dicts = sorted(submission_dicts, key=itemgetter('comments'),reverse=True)
+
+for submission_dict in submission_dicts:
+    print(f"\nTitle: {submission_dict['title']}")
+    print(f"Discussion link: {submission_dict['hn_link']}")
+    print(f"Comments: {submission_dict['comments']}")
